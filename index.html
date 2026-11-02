@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="hi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advanced Modern Calculator</title>
+  <!-- Google Fonts & Phosphor Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body data-theme="dark">
+  <div class="calculator-container">
+    <!-- Header / Top Bar -->
+    <header class="calc-header">
+      <div class="brand">
+        <span class="brand-badge">PRO</span>
+        <h1>CalcSphere</h1>
+      </div>
+      <div class="header-actions">
+        <button id="mode-toggle-btn" class="icon-btn" title="Toggle Scientific Mode">
+          <i class="fa-solid fa-atom"></i>
+          <span class="btn-text">Sci</span>
+        </button>
+        <button id="history-toggle-btn" class="icon-btn" title="View History">
+          <i class="fa-solid fa-clock-rotate-left"></i>
+        </button>
+        <button id="theme-toggle-btn" class="icon-btn" title="Toggle Dark/Light Theme">
+          <i class="fa-solid fa-moon"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- Display Area -->
+    <div class="display-section">
+      <div class="angle-badge-wrapper">
+        <button id="deg-rad-btn" class="deg-rad-toggle" title="Switch DEG / RAD">DEG</button>
+        <span class="memory-badge hidden" id="memory-indicator">M</span>
+      </div>
+      <div class="expression" id="calc-expression"></div>
+      <div class="current-value-wrapper">
+        <span class="current-value" id="calc-display">0</span>
+      </div>
+    </div>
+
+    <!-- Keypad Container -->
+    <div class="keypad-wrapper">
+      <!-- Scientific Keys (Collapsible / Toggleable) -->
+      <div class="scientific-panel" id="scientific-panel">
+        <button class="key func-key" data-action="sin">sin</button>
+        <button class="key func-key" data-action="cos">cos</button>
+        <button class="key func-key" data-action="tan">tan</button>
+        <button class="key func-key" data-action="asin">sin⁻¹</button>
+        <button class="key func-key" data-action="acos">cos⁻¹</button>
+        <button class="key func-key" data-action="atan">tan⁻¹</button>
+
+        <button class="key func-key" data-action="ln">ln</button>
+        <button class="key func-key" data-action="log">log₁₀</button>
+        <button class="key func-key" data-action="sqrt">√x</button>
+        <button class="key func-key" data-action="cbrt">∛x</button>
+        <button class="key func-key" data-action="square">x²</button>
+        <button class="key func-key" data-action="cube">x³</button>
+
+        <button class="key func-key" data-action="pow">xʸ</button>
+        <button class="key func-key" data-action="fact">x!</button>
+        <button class="key func-key" data-action="inv">1/x</button>
+        <button class="key func-key" data-action="pi">π</button>
+        <button class="key func-key" data-action="e">e</button>
+        <button class="key func-key" data-action="abs">|x|</button>
+
+        <!-- Memory Operations -->
+        <button class="key memory-key" data-action="mc">MC</button>
+        <button class="key memory-key" data-action="mr">MR</button>
+        <button class="key memory-key" data-action="m-add">M+</button>
+        <button class="key memory-key" data-action="m-sub">M-</button>
+        <button class="key memory-key" data-action="ms">MS</button>
+        <button class="key func-key" data-action="rand">RND</button>
+      </div>
+
+      <!-- Standard Keys Grid -->
+      <div class="standard-grid">
+        <button class="key action-key clear" data-action="all-clear">AC</button>
+        <button class="key action-key delete" data-action="delete" title="Backspace">
+          <i class="fa-solid fa-delete-left"></i>
+        </button>
+        <button class="key func-key bracket" data-action="bracket">(</button>
+        <button class="key func-key bracket" data-action="bracket">)</button>
+        <button class="key op-key" data-action="operator" data-val="/">÷</button>
+
+        <button class="key num-key" data-val="7">7</button>
+        <button class="key num-key" data-val="8">8</button>
+        <button class="key num-key" data-val="9">9</button>
+        <button class="key op-key" data-action="operator" data-val="*">×</button>
+        <button class="key func-key" data-action="percent">%</button>
+
+        <button class="key num-key" data-val="4">4</button>
+        <button class="key num-key" data-val="5">5</button>
+        <button class="key num-key" data-val="6">6</button>
+        <button class="key op-key" data-action="operator" data-val="-">−</button>
+        <button class="key func-key" data-action="negate">±</button>
+
+        <button class="key num-key" data-val="1">1</button>
+        <button class="key num-key" data-val="2">2</button>
+        <button class="key num-key" data-val="3">3</button>
+        <button class="key op-key" data-action="operator" data-val="+">+</button>
+        <button class="key op-key equals" data-action="calculate">=</button>
+
+        <button class="key num-key zero-key" data-val="0">0</button>
+        <button class="key num-key" data-val="00">00</button>
+        <button class="key num-key" data-val=".">.</button>
+      </div>
+    </div>
+
+    <!-- History Drawer / Overlay -->
+    <div class="history-drawer" id="history-drawer">
+      <div class="history-header">
+        <h3><i class="fa-solid fa-clock-rotate-left"></i> Calculation History</h3>
+        <button id="close-history-btn" class="icon-btn-small" title="Close">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="history-list" id="history-list">
+        <p class="empty-history-text">No calculations yet</p>
+      </div>
+      <div class="history-footer">
+        <button id="clear-history-btn" class="clear-history-btn">
+          <i class="fa-solid fa-trash-can"></i> Clear History
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
